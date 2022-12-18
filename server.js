@@ -84,12 +84,3 @@ app.get("/detail/:id", (req, res) => {
     }
   );
 });
-
-app.get("/edit/:id", (req, res) => {
-  db.collection("post").findOne(
-    { _id: parent(req.params.id) },
-    (err, result) => {
-      res.render("edit.ejs", {});
-    }
-  );
-});
