@@ -6,5 +6,13 @@ app.listen(3000, () => {
 });
 
 app.get("/dog", (require, response) => {
-  response.send("hello dog!");
+  response.send("hello Dog!");
+});
+
+app.get("/rive", (require, response) => {
+  response.send("hello Rive!");
+});
+
+app.get("/", (require, response) => {
+  response.sendFile(__dirname + "/index.html");
 });
