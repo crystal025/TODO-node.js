@@ -5,18 +5,14 @@ app.listen(3000, () => {
   console.log("hello world!");
 });
 
-app.get("/dog", (require, response) => {
-  response.send("hello Dog!");
-});
-
-app.get("/rive", (require, response) => {
-  response.send("hello Rive!");
-});
-
 app.get("/", (require, response) => {
   response.sendFile(__dirname + "/index.html");
 });
 
 app.get("/write", (require, response) => {
   response.sendFile(__dirname + "/write.html");
+});
+
+app.post("/add", (req, res) => {
+  res.send("전송 완료");
 });
