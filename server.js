@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
+const methodOverride = require("method-override");
+app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
@@ -80,6 +82,19 @@ app.get("/detail/:id", (req, res) => {
         res.sendFile(__dirname + "/index.html");
       } else {
         res.render("detail.ejs", { data: result });
+      }
+    }
+  );
+});
+
+app.get("/edit/:id", (req, res) => {
+  db.collection("post").findOne(
+    { _id: parseInt(req.params.id) },
+    (err, result) => {
+      if (result === null) {
+        res.sendFile(__dirname + "/write.html");
+      } else {
+        res.render("edit.ejs", { data: result });
       }
     }
   );
