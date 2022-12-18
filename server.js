@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.listen(3000, () => {
-  console.log("hello world!");
+const MongoClient = require("mongodb").MongoClient;
+MongoClient.connect(process.env.URL, (err, client) => {
+  app.listen(3000, () => {
+    console.log("hello world!");
+  });
 });
 
 app.get("/", (require, response) => {
