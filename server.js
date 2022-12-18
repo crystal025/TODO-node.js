@@ -1,17 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-app.use(express.urlencoded({ extended: true }));
 const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: true }));
 const MongoClient = require("mongodb").MongoClient;
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 const url = process.env.MONGO_URI;
 let db;
-
-app.use(express.static("public"));
-app.use(express.json());
 
 MongoClient.connect(`${url}`, { useUnifiedTopology: true }, (err, client) => {
   if (err) {
@@ -34,13 +33,22 @@ app.get("/write", (require, response) => {
 });
 
 app.post("/add", (req, res) => {
-  res.send("전송 완료");
-  db.collection("post").insertOne(
-    { content: req.body.content, date: req.body.date },
-    (err, result) => {
-      console.log("저장 완료!");
-    }
-  );
+  res.send("db 전송 완료");
+  db.collection("counter").findOne({ title: "forMakeId" }, (err, result) => {
+    db.collection("post").insertOne(
+      { _id: result.total, content: req.body.content, date: req.body.date },
+      (err, result) => {
+        console.log("db 저장 완료!");
+        db.collection("counter").updateOne(
+          { title: "forMakeId" },
+          { $inc: { total: 1 } },
+          (err, result) => {
+            if (err) console.log(err);
+          }
+        );
+      }
+    );
+  });
 });
 
 app.get("/list", (req, res) => {
@@ -50,4 +58,38 @@ app.get("/list", (req, res) => {
       if (err) console.log(err);
       res.render("list.ejs", { todoList: result });
     });
+});
+
+app.delete("/list", (req, res) => {
+  req.body._id = parseInt(req.body._id);
+  db.collection("post").deleteOne(req.body, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("db 삭제 완료!");
+      res.status(200).send({ message: "삭제에 성공하셨습니다!" });
+    }
+  });
+});
+
+app.get("/detail/:id", (req, res) => {
+  db.collection("post").findOne(
+    { _id: parseInt(req.params.id) },
+    (err, result) => {
+      if (result === null) {
+        res.sendFile(__dirname + "/index.html");
+      } else {
+        res.render("detail.ejs", { data: result });
+      }
+    }
+  );
+});
+
+app.get("/edit/:id", (req, res) => {
+  db.collection("post").findOne(
+    { _id: parent(req.params.id) },
+    (err, result) => {
+      res.render("edit.ejs", {});
+    }
+  );
 });
