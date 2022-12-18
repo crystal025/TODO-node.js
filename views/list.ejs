@@ -15,7 +15,7 @@
       <div class="container mt-4">
       <ul class="list-group">
       <% todoList.map((todo)=>{  %>
-          <li class="list-group-item" >
+          <li class="list-group-item" data-id="<%= todo._id %>">
             <h5><%= todo.content %></h5>
             <p><%= todo.date %></p>
             <button type="button" class="btn btn-outline-danger" data-id="<%= todo._id %>">🗑</button>
@@ -26,6 +26,9 @@
         </div>
           <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
           <script>
+            $(".list-group-item").click((event)=>{
+              window.location.pathname = `/detail/${event.target.dataset.id}`
+            })
             $(".btn-outline-danger").click((event)=>{
               $.ajax({
               method:"DELETE",
@@ -35,8 +38,13 @@
               console.log(event.target.parent)
               $(event.target).parent('li').fadeOut();
             }).fail(()=>{
-
             })
+            })
+            $(".btn-outline-warning").click((event)=>{
+              event.stopPropagation()
+              if(event.target === event.currentTarget){
+                window.location.pathname = `/edit/${event.target.dataset.id}`
+              }
             })
 
 

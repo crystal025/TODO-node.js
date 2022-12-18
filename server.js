@@ -105,7 +105,7 @@ app.put("/edit", (req, res) => {
     { _id: parseInt(req.body.id) },
     {
       $set: {
-        id: parseInt(req.body.id),
+        _id: parseInt(req.body.id),
         content: req.body.content,
         date: req.body.date,
       },
