@@ -99,3 +99,24 @@ app.get("/edit/:id", (req, res) => {
     }
   );
 });
+
+app.put("/edit", (req, res) => {
+  db.collection("post").updateOne(
+    { _id: parseInt(req.body.id) },
+    {
+      $set: {
+        id: parseInt(req.body.id),
+        content: req.body.content,
+        date: req.body.date,
+      },
+    },
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("db 수정 완료!");
+        res.redirect("/list");
+      }
+    }
+  );
+});
