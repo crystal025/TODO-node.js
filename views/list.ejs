@@ -30,6 +30,7 @@
               window.location.pathname = `/detail/${event.target.dataset.id}`
             })
             $(".btn-outline-danger").click((event)=>{
+              event.stopPropagation()
               $.ajax({
               method:"DELETE",
               url: "/list",
