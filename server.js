@@ -16,3 +16,7 @@ app.get("/rive", (require, response) => {
 app.get("/", (require, response) => {
   response.sendFile(__dirname + "/index.html");
 });
+
+app.get("/write", (require, response) => {
+  response.sendFile(__dirname + "/write.html");
+});
