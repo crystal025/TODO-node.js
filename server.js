@@ -22,7 +22,7 @@ MongoClient.connect(`${url}`, { useUnifiedTopology: true }, (err, client) => {
   db = client.db("todo");
 
   app.listen(3000, () => {
-    console.log("hello world!");
+    console.log("서버연결!");
   });
 });
 
