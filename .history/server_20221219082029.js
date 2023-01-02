@@ -69,7 +69,7 @@ app.delete("/list", (req, res) => {
       console.log(err);
     } else {
       console.log("db 삭제 완료!");
-      res.status(201).send({ message: "삭제에 성공하셨습니다!" });
+      res.status(200).send({ message: "삭제에 성공하셨습니다!" });
     }
   });
 });
